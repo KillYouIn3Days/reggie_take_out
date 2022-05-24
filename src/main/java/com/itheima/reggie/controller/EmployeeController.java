@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itheima.reggie.common.R;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author WilsonEdwards
  * @since 2022-05-24
  */
+@Slf4j
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -66,5 +69,24 @@ public class EmployeeController {
     public R<String> logout(HttpServletRequest request) {
         request.getSession().removeAttribute("employee");
         return R.success("退出成功");
+    }
+
+    @PostMapping
+    public R<String> save(HttpServletRequest request, @RequestBody Employee employee) {
+        log.info("新增员工：员工信息：{}", employee.toString());
+
+        //设置初始密码
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encode = passwordEncoder.encode("123456");
+        employee.setPassword(encode);
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+
+        Long empId = (Long) request.getSession().getAttribute("employee");
+        employee.setCreateUser(empId);
+        employee.setUpdateUser(empId);
+
+        employeeService.save(employee);
+        return R.success("添加成功");
     }
 }
