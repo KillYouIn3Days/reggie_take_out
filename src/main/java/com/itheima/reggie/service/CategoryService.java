@@ -2,6 +2,7 @@ package com.itheima.reggie.service;
 
 import com.itheima.reggie.entity.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -12,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-05-24
  */
 public interface CategoryService extends IService<Category> {
-
+    void remove(Long id);
 }

@@ -2,6 +2,9 @@ package com.itheima.reggie.entity;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -44,21 +47,25 @@ public class Category implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)//插入时填充字段
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)//插入、更新时填充字段
     private LocalDateTime updateTime;
 
     /**
      * 创建人
      */
+    @TableField(fill = FieldFill.INSERT)//插入时填充字段
     private Long createUser;
 
     /**
      * 修改人
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)//插入、更新时填充字段
     private Long updateUser;
 
 

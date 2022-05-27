@@ -17,6 +17,7 @@ import java.io.IOException;
 @Slf4j
 @WebFilter(filterName = "LoginCheckFilter", urlPatterns = "/*")
 public class LoginCheckFilter implements Filter {
+    public static ThreadLocal<Long> threadLocal = new ThreadLocal<>();
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -25,18 +26,25 @@ public class LoginCheckFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String requestURI = request.getRequestURI();
-        log.info("拦截到请求：{}",requestURI);
+        log.info("拦截到请求：{}", requestURI);
 
         String[] urls = new String[]{
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
-                "front/**"
+                "/front/**",
+                "/common/**"
         };
 
         boolean check = check(urls, requestURI);
+        if (check) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-        if (check || request.getSession().getAttribute("employee") != null) {
+        Long emp = (Long) request.getSession().getAttribute("employee");
+        if (emp != null) {
+            threadLocal.set(emp);
             filterChain.doFilter(request, response);
             return;
         }
