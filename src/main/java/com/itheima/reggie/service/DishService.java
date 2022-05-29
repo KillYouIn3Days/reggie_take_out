@@ -1,5 +1,6 @@
 package com.itheima.reggie.service;
 
+import com.itheima.reggie.dto.DishDto;
 import com.itheima.reggie.entity.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface DishService extends IService<Dish> {
 
+    void saveWithFlavors(DishDto dishDto);
+
+    DishDto getByIdWithFlavors(Long id);
+
+    void updateWithFlavors(DishDto dishDto);
 }

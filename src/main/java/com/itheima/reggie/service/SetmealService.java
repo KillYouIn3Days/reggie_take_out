@@ -1,5 +1,6 @@
 package com.itheima.reggie.service;
 
+import com.itheima.reggie.dto.SetmealDto;
 import com.itheima.reggie.entity.Setmeal;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SetmealService extends IService<Setmeal> {
 
+    void updateWithDish(SetmealDto setmealDto);
+
+    SetmealDto getWithDish(Long id);
+
+    void saveWithDish(SetmealDto dto);
+
+    void removeWithDish(Long[] ids);
 }
